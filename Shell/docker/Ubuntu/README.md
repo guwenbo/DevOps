@@ -5,7 +5,7 @@ The `main.sh` will download and install docker-ce:latest automatically on Ubuntu
 
 ## How to use ?
 ```
-$ sudo ./main.sh
+$ sudo ./xx.sh
 ```
 
 ## Ref
