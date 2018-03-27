@@ -1,0 +1,11 @@
+[Unit]
+Description=Tomcat Web Container Engine
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=CATALINA_START
+ExecStop=CATALINA_STOP
+
+[Install]
+WantedBy=graphical.target
