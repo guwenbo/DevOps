@@ -3,6 +3,7 @@ Description=Tomcat Web Container Engine
 After=network.target
 
 [Service]
+User=tomcat
 Type=forking
 ExecStart=CATALINA_START
 ExecStop=CATALINA_STOP
