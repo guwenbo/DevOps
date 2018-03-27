@@ -1,0 +1,12 @@
+[Unit]
+Description=Jenkins - Continue Integration
+After=network.target
+
+[Service]
+Type=forking
+user=jenkins
+ExecStart=JENKINS_START
+ExecStop=JENKINS_STOP
+
+[Install]
+WantedBy=graphical.target

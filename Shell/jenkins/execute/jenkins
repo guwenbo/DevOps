@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# **************************************************************************************************
+# *                       What does this script do?
+# *
+# * (1). launch jenkins background on port 20000 (default)
+# * (2). create log file with timestamp, like 2018-03-26-jenkins.log
+# *
+# *
+# * INFO:
+# *
+# *    Author:      gin
+# *    Mail:        bobo1314love@vip.qq.com
+# *    Create on:   2018/03/26 11:10
+# *    Update on:
+# *
+# **************************************************************************************************
+
+
+set -e
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+P_LOG=true
+JENKINS_PORT=${1:-20000}
+JENKINS_PARENT_DIR=/usr/local/jenkins
+JENKINS_LOG_DIR=${JENKINS_PARENT_DIR}/logs
+JENKINS_WAR_LOCATION=${JENKINS_PARENT_DIR}/src/jenkins.war
+
+logger() {
+    if [[ $P_LOG != true ]]; then
+      return
+    fi
+    case "$1" in
+      info)
+        echo -e "\x1b[34;1m${2}\x1b[0;0m"
+        ;;
+      success)
+        echo -e "\x1b[32;1m${2}\x1b[0;0m"
+        ;;
+      warn)
+        echo -e "\x1b[33;6m${2}\x1b[0;0m"
+        ;;
+      error)
+        echo -e "\x1b[31;1m${2}\x1b[0;0m"
+        ;;
+      fatal)
+        echo -e "\x1b[31;7m${2}\x1b[0;0m"
+        ;;
+      *)
+        echo "$1 $2"
+        ;;
+    esac
+}
+
+
+launch_jenkins_background() {
+  logger info "Launch jenkins with jenkins user"
+  java -jar $JENKINS_WAR_LOCATION --httpPort=$JENKINS_PORT &> $JENKINS_LOG_DIR/$(date +"%Y-%m-%d")-jenkins.log &
+}
+
+
+prompt() {
+  if [[ -n $(ps -elf | grep "java -jar $JENKINS_WAR_LOCATION --httpPort=$JENKINS_PORT" | grep -v grep) ]]; then
+    logger success "Congratulations! jenkins launch successfully"
+  else
+    logger fatal "FATAL! A fatal exception has occurred. Please check jenkins' logs"
+  fi
+}
+
+
+main() {
+  launch_jenkins_background
+  prompt
+}
+
+main
