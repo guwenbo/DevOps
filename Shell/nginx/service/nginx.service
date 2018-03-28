@@ -1,0 +1,13 @@
+[Unit]
+Description=Nginx Http Server Engine
+After=network.target
+
+[Service]
+User=nginx
+Type=forking
+ExecStart=NGINX_START
+ExecStop=NGINX_STOP
+ExecReload=NGINX_RELOAD
+
+[Install]
+WantedBy=graphical.target
