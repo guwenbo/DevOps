@@ -1,0 +1,41 @@
+version: '3'
+services:
+
+  gitlab:
+    image: 'gitlab/gitlab-ce:rc'
+    restart: always
+    hostname: 'gitlab.f5'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.f5/'
+        gitlab_rails['db_host'] = 'db'
+        gitlab_rails['db_database'] = 'gitlab'
+        gitlab_rails['db_password'] = 'gitlab'
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_encoding'] = 'UTF8'
+        gitlab_rails['redis_host'] = "redis"
+    ports:
+      - '21000:80'
+      - '21001:443'
+      - '21002:22'
+    volumes:
+      - '/var/gitlab/config:/etc/gitlab'
+      - '/var/gitlab/logs:/var/log/gitlab'
+      - '/var/gitlab/data:/var/opt/gitlab'
+    links:
+      - db:db
+      - redis:redis
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=gitlab
+      - POSTGRES_PASSWORD=gitlab
+    volumes:
+      - '/var/gitlab/postgresql/data:/var/lib/postgresql/data'
+
+  redis:
+    image: redis:3.2.11
