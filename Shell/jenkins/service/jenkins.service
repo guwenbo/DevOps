@@ -3,8 +3,8 @@ Description=Jenkins - Continue Integration
 After=network.target
 
 [Service]
+User=jenkins
 Type=forking
-user=jenkins
 ExecStart=JENKINS_START
 ExecStop=JENKINS_STOP
 
