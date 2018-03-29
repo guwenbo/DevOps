@@ -1,0 +1,14 @@
+[Unit]
+Description=GitLab Service Docker Container
+Requires=docker.service
+After=docker.service
+
+
+[Service]
+WorkingDirectory=GITLAB_YAML_LOCATION
+ExecStart=DOCKER_COMPOSE_BINARY_LOCATION up
+ExecStop=DOCKER_COMPOSE_BINARY_LOCATION down
+
+
+[Install]
+WantedBy=graphical.target
