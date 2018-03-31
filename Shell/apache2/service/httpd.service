@@ -1,0 +1,12 @@
+[Unit]
+Description=Httpd Http Server Engine
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=HTTPD_START
+ExecStop=HTTPD_STOP
+ExecReload=HTTPD_RELOAD
+
+[Install]
+WantedBy=graphical.target
